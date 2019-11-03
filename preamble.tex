@@ -1,0 +1,80 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% all the formatting stuff and packages
+
+
+
+\usepackage{geometry}
+\geometry{
+  top=4cm,
+  headheight=70pt,
+  headsep=25pt,
+  inner=1.25in,
+  outer=1.25in
+}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{xcolor,graphicx,hyperref,amsthm,amsmath,amssymb}
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%%% Begin Header Definitions %%%
+\fancypagestyle{firststyle}
+{
+   	\lhead{}
+	\rhead{\raisebox{0.2cm}{\includegraphics[width=3.5cm]{resource/hpi_logo.pdf}}}
+	\renewcommand{\headrulewidth}{0pt}
+}
+
+
+\newcommand{\makeheader}[1]{
+\noindent
+\textbf{Algorithmix \hfill Winter term 2019/20 \\ Andreas G\"obel}
+
+\begin{center}
+\large{\textbf{\makeHeadline}}\\
+\end{center}
+
+\begin{center}
+\textit{#1} 
+\end{center}
+
+
+}
+
+\newcommand{\lecturer}[1]{\newcommand{\makeLecturer}{#1}}
+\newcommand{\lectureName}[1]{\newcommand{\makeLectureName}{#1}}
+\newcommand{\semester}[1]{\newcommand{\makeSemester}{#1}}
+\newcommand{\headline}[1]{\newcommand{\makeHeadline}{#1}}
+\newcommand{\urlLine}[1]{\newcommand{\makeUrlLine}{#1}}
+%%% End Header Definitions %%%
+
+\newcommand{\pr}{\ensuremath{\mathbb{P}}}
+\newcommand{\E}{\ensuremath{\mathbb{E}}}
+
+
+\newcommand{\makeCompact}{%
+\setlength{\itemsep}{1pt}%
+\setlength{\parsep}{0pt}%
+\setlength{\parskip}{0pt}}
+
+
+\newcommand{\Var}{\mathrm{Var}}
+
+
+\newcommand{\student}[2]{
+\thispagestyle{firststyle}
+
+%%% Begin Header Specification %%%
+
+\headline{Solutions to homework #1}
+
+\makeheader{#2}
+
+\medskip
+
+}
+
+\newcommand{\sol}[1]{ \hspace{.5cm}\\ \noindent \textbf{Exercise #1.}}
