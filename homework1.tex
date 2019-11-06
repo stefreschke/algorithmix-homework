@@ -13,11 +13,79 @@
  \student{1}{Stefan Reschke}
  
 
- \sol{1}
+ \sol{1} In the lecture we learned about euclidean algorithm to compute the greatest common divisor (\texttt{gcd}) of two numbers $x,y\in \mathbb{N}$. The least common multiple (\texttt{lcm}) of $x,y$ and the gcd can be put together using the following equation \begin{equation}
+ 	\texttt{lcm}(x,y)=\frac{x\cdot y}{\texttt{gcd}(x,y)}.
+ \end{equation}
  
- \sol{2}
+ \textit{Proof.} First we define $d$ as the \texttt{gcd} of $x,y$ \begin{equation}
+ 	d:=\texttt{gcd}(x,y)
+ \end{equation} and $l$ as the \texttt{lcm} of $x$ and $y$ \begin{equation}
+ 	l:=\texttt{lcm}(x,y).
+ \end{equation}
+ The equation states that \begin{equation}
+ 	l=\frac{xy}{d}.
+ \end{equation}
+ $\frac{xy}{d}$ obviously is a common multiple of $x$ and $y$ because \begin{equation}
+ 	\frac{xy}{d}\mid x\quad\textrm{and}\quad\frac{xy}{d}\mid x.
+ \end{equation}
+ For $\frac{xy}{d}$ to be $l$, the following expression needs to hold: \begin{equation}
+ 	\lnot\bigg(\exists g<\frac{xy}{d}:\big(x|g\land y|g\big)\bigg)
+ \end{equation} This can be simplified as follows: \begin{align}
+ 	\lnot\bigg(\exists g<\frac{xy}{d}&:\big(x\mid g\land y\mid g\big)\bigg) \\
+ 	\forall g<\frac{xy}{d}&:\lnot\big(x\mid g\land y\mid g\big) \\
+ 	\forall g<\frac{xy}{d}&:\big(x\nmid g\lor y\nmid g\big)
+ \end{align}
+ Let $g$ be a number less than $\frac{xy}{d}$. We can write \begin{align}
+ 	g&<\frac{xy}{d} \\
+ 	g\cdot d&<x\cdot y.
+ \end{align}
+ For the first case, we assume that $x\nmid g$. We know that \begin{equation}
+ 	\exists k:\ g=k \cdot x
+ \end{equation}
+ 
+% In the lecture we discussed that the \texttt{gcd} of $x$ and $y$ is always a linear combination of $x, y$. \begin{equation}
+% 	\exists a,b:\ d=ax+by
+% \end{equation}
+ 
+ 
+ \sol{2} (a) Let $N$ be an $n$-Bit long number. In order to see how many Bit we need to store $N!$, we have to calculate the binary logarithm of $N!$. \begin{equation}
+ 	\log_2(N!) = \log_2\bigg(\prod_{i=1}^{N}i\bigg) = \sum_{i=1}^N \log_2(i)
+ \end{equation}
  
  \sol{3}
+ \noindent (a) To take a look into this lemma, we test for $p=5$. \begin{equation}
+ 	1^2\equiv 1,\ 2^2\equiv 4,\ 3^2\equiv 4,\ 4^2\equiv 1 \pmod{5}
+ \end{equation}
+ Apparently the values at the edge of the given set $\{1, \ldots, p-1\}$ have themself as their modular inverse. \begin{enumerate}
+ 	\item It is obvious that \begin{equation}
+ 		1^2 \equiv 1 \pmod{p}
+ 	\end{equation} holds for every $p$, not only primes.
+ 	\item We take a look at $p-1$. We see that \begin{equation}
+ 		(p-1)^2=p^2-2p+1
+ 	\end{equation} and realize that \begin{equation}
+ 		p^2-2p \equiv 0 \pmod{p}.
+ 	\end{equation} Hence, we know that \begin{equation}
+ 		(p-1)^2 \equiv 1 \pmod{p}.
+ 	\end{equation}
+ \end{enumerate}
+
+ \noindent (b) We can split up the factorial of $p-1$ to \begin{gather}
+ 	(p-1)!=1\cdot 2\cdot\ldots\cdot (p-2)\cdot (p-1).
+ \end{gather} Since every prime $p$ that fulfils $p>2$ is a odd number, we can build pairs from elements of the set \begin{equation}
+ 	P := \{x\in\mathbb{N}| x<p\}
+ \end{equation} because we know that \begin{equation}
+ 	\exists k\in\mathbb{N}: \# P=2k.
+ \end{equation} Since we know that \begin{equation}
+ 	\forall k_1\in P:\ \exists! k_2\in P:\ k_1\cdot k_2 \equiv 1 \pmod{p}
+ \end{equation} $(p-1)!$ shortens itself down very easily. Only $p-1$ (which is its own modular inverse) stays. We see that \begin{equation}
+ 	(p-1)!\equiv p-1 \equiv -1 \pmod{p},
+ \end{equation} which was assumed.
+ 
+ \noindent (c) If $N$ is not prime, we know that \begin{equation}
+ 	N = \prod_{i\in P} i
+ \end{equation} where $P$ is the list of prime factors of $N$. We also know that \begin{equation}
+ 	\forall p\in P:\ N \equiv 0 \pmod{p}
+ \end{equation} holds, since $p \div 
  
  \sol{4}
  
