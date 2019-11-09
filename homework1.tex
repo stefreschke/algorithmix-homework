@@ -65,8 +65,10 @@ return x*y/gcd
  
  \sol{2} (a) Let $N$ be an $n$-Bit long number. In order to see how many Bit we need to store $N!$, we have to calculate the binary logarithm of $N!$, which has the following equivalences \begin{equation}
  	\log_2(N!)= \log_2\bigg(\prod_{i=1}^{N}i\bigg) = \sum_{i=1}^N \log_2(i).
- \end{equation}
- 
+ \end{equation} So by going from $n!$ to $(n+1)!$, we have \begin{align}
+ 	\sum_{i=1}^{n+1} \log_2(i)&=\log_2(n+1) + \sum_{i=1}^{n} \log_2(i).
+ \end{align} In conclusion, the number of bits required to store 
+ $N!$ will grow no faster than $n\log n$.
  (b) We can use the algorithm in \autoref{algo:2} to compute $n!$ for $n\in\mathbb{N}$. It involves $n$ recursion calls (if optimized $n-2$ recursion calls, since $0!=1!=1$). It required $n$ multiplications. For analyzing its running time we have \begin{gather}
  	T(0)=1, \\
  	T(n+1)=T(n)+\mathcal{M}(n),
@@ -141,18 +143,30 @@ return x*y/gcd
  	i_1-i_2\equiv 0 \pmod{pq}\ \leftrightarrow\ i_1=i_2,
  \end{equation} which shows that $i_1$ and $i_2$ indeed are equal.
  
- (c)
+ (c) In order to proof the stated congruence, we have to show all three of the following cases: \begin{enumerate}
+ 	\item when $p<q$ and
+ 	\item when $p>q$.
+ \end{enumerate} We try to do the first one and hope to be able to say that the second can be shown similar to the first. At first we assume $p<q$. Then we have \begin{equation}
+ 	i \equiv jq (q-1 \pmod p)+kp (p-1) \pmod{pq},
+ \end{equation} which is true if there \begin{equation}
+ 	\exists e\in\mathbb{Z}:\ i \equiv jq (ep+q-1)+kp(p-1) \pmod{pq}.
+ \end{equation} This we can simplify \begin{align}
+ 	i &\equiv jqep +jq^2-jq+kp^2-kp \pmod{pq} \\
+ 	&\equiv jq^2-jq+kp^2-kp \pmod{pq} \\
+	&\equiv jq(q-1)+kp(p-1) \pmod{pq}.
+ \end{align}
+ 
  
  (d) Adding additional primes to $p$ and $q$ seems possible. If \begin{equation}
  	N\subset\{x\in\mathbb{N}\ |\ x\textrm{ prime}\}
  \end{equation} we would have $\#N$ modular congruences since \begin{equation}
- 	\forall n\in N:\ i\equiv n \pmod{\prod_{i\in N} i}
+ 	\forall n\in N: \exists e<n:\ i\equiv e \pmod{n}
  \end{equation} where \begin{equation}
- 	0\leq i\leq \prod_{i\in N}.
+ 	0\leq i\leq \prod_{n\in N}n.
  \end{equation} All proofs should work in a similar way then.
  
  \sol{5}
- \noindent (a) Since we know \begin{equation}
+  (a) Since we know \begin{equation}
  	p \equiv 3 \pmod{4},
  \end{equation} we know that \begin{equation} \label{task5:modp}
  	\exists k\in\mathbb{Z}:\ p=4k+3.
@@ -160,7 +174,7 @@ return x*y/gcd
  	\frac{p+1}{4} = \frac{4k+3+1}{4} = \frac{4k+4}{4}=k+1, \label{5a:kp1}
  \end{equation} which is obviously an integer. \qed
  
- \noindent (b) We have to proof that \begin{equation}
+  (b) We have to proof that \begin{equation}
  	a^{\frac{p+1}{4}}\overset{!}{\equiv}x \pmod{p}
  \end{equation} holds.
  
@@ -168,7 +182,7 @@ return x*y/gcd
 % 	a^{k+1}\overset{!}{\equiv}x \pmod{p}
 % \end{align}
 
- \textit{Proof.} Since $a$ is a quadratic residue mod $p$, we know that the Legendre symbol \begin{equation}
+ \textit{Proof.} Since $a$ has a square root $x$, we know that $a$ is a quadratic residue mod $p$. Thus, we know that the Legendre symbol \begin{equation}
  	\bigg(\frac{a}{p}\bigg)\equiv 1\pmod{p}
  \end{equation} and therefore can use Legendres formula \begin{equation}
  	a^{\frac{p-1}{2}}\equiv 1\pmod{p}. \label{5b:saver}
