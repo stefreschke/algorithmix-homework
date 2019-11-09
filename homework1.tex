@@ -13,14 +13,208 @@
  \student{1}{Stefan Reschke}
  
 
- \sol{1}
+ \sol{1} In the lecture we learned about euclidean algorithm to compute the greatest common divisor (\texttt{gcd}) of two numbers $x,y\in \mathbb{N}$. The least common multiple (\texttt{lcm}) of $x,y$ and the gcd can be put together using the following equation \begin{equation}
+ 	\texttt{lcm}(x,y)=\frac{x\cdot y}{\texttt{gcd}(x,y)}.
+ \end{equation}
  
- \sol{2}
+ \textit{Proof.} We show the equivalent \begin{equation}
+ 	\texttt{lcm}(x,y)\cdot\texttt{gcd}(x,y)=x\cdot y
+ \end{equation}First we define $d$ as the \texttt{gcd} of $x,y$ \begin{equation}
+ 	d:=\texttt{gcd}(x,y).
+ \end{equation} Because we know \begin{equation}
+ 	d\mid x\ \land\ d\mid y \label{1a:divs}
+ \end{equation} we also know that \begin{equation}
+ 	d\mid xy \label{1a:mult-divs}.
+ \end{equation} Because of \autoref{1a:divs} we see that \begin{equation}
+ 	\exists k_1, k_2\in\mathbb{Z}:\ x=k_1d\ \land\ y=k_2d.
+ \end{equation} We also see that because of \autoref{1a:mult-divs} \begin{equation}
+ 	\exists l\in\mathbb{Z}:\ dl=xy \label{1a:l-exists}
+ \end{equation} holds. Combining those, we see that \begin{gather}
+ 	dl=k_2dx=k_1dy \\
+ 	l=k_2x=k_1y.
+ \end{gather} This means that $l$ is a common multiple of $x$ and $y$. We can show that there is no common multiple $m$ thats smaller than $l$. Assume $m$ is a common multiple of $x$ and $y$, then we know that \begin{equation}
+ 	\exists l_1,l_2\in\mathbb{Z}:\ m=l_1x=l_2y
+ \end{equation} We take a look at the product $md$. We use the equivalent linear combination of $x$ and $y$ that is equal to $d$: \begin{equation}
+ 	\exists a,b\in\mathbb{Z}:\ d=ax+ay.
+ \end{equation} We see that \begin{align}
+ 	md&=max+mby\\
+ 	&=l_2yax+l_1xby\\
+ 	&=xy(l_2a+l_1b)	
+ \end{align} which is equivalent to \begin{equation}
+ 	md=dl(l_2a+l_1b)
+ \end{equation} because of \autoref{1a:l-exists}. We see that \begin{equation}
+ 	m=l(l_2a+l_1b)
+ \end{equation} which means that \begin{equation}
+ 	l\mid m,
+ \end{equation} which shows \begin{equation}
+ 	l=\texttt{lcm}(x,y)
+ \end{equation} because every common multiple is itself a multiple of $l$. In conclusion, we have \begin{equation}
+ 	\texttt{lcm}(x,y)\cdot\texttt{gcd}(x,y)=x\cdot y,
+ \end{equation} which was to be shown. \qed
+ 
+ We can use the algorithm in \autoref{algo:1} to compute the \texttt{lcm} of $x$ and $y$. Since the determining the \texttt{gcd} via the euclidean algoriths takes $\mathcal{O}(n^3)$ (as stated in the course book), we can neglect the additional multiplication and division. Thats why the algorithm in \autoref{algo:1} is also $\mathcal{O}(n^3)$.
+ 
+ \begin{lstlisting}[caption={Algorithm to compute \texttt{lcm}(x,y)},label={algo:1}]
+Input: natural numbers x, y
+Output: lcm(x, y)
+
+gcd = euclid(x,y)
+return x*y/gcd
+ \end{lstlisting}
+ 
+ 
+ \sol{2} (a) Let $N$ be an $n$-Bit long number. In order to see how many Bit we need to store $N!$, we have to calculate the binary logarithm of $N!$, which has the following equivalences \begin{equation}
+ 	\log_2(N!)= \log_2\bigg(\prod_{i=1}^{N}i\bigg) = \sum_{i=1}^N \log_2(i).
+ \end{equation} So by going from $n!$ to $(n+1)!$, we have \begin{align}
+ 	\sum_{i=1}^{n+1} \log_2(i)&=\log_2(n+1) + \sum_{i=1}^{n} \log_2(i).
+ \end{align} In conclusion, the number of bits required to store 
+ $N!$ will grow no faster than $n\log n$.
+ (b) We can use the algorithm in \autoref{algo:2} to compute $n!$ for $n\in\mathbb{N}$. It involves $n$ recursion calls (if optimized $n-2$ recursion calls, since $0!=1!=1$). It required $n$ multiplications. For analyzing its running time we have \begin{gather}
+ 	T(0)=1, \\
+ 	T(n+1)=T(n)+\mathcal{M}(n),
+ \end{gather} where $\mathcal{M}(n)$ stands for the o-notation expression of the used multiplication algorithm. Since it involves $n$-multiplications we have \begin{equation}
+ 	n\cdot\mathcal{M}(n)=\mathcal{M}(n^2)
+ \end{equation}
+ 
+ \begin{lstlisting}[caption={Algorithm to compute factorial of a given number},label={algo:2}]
+ Name: factorial
+ Input: natural numbers n
+ Output: n!
+ 
+ if n = 0: return 1
+ return n*factorial(n-1)
+ \end{lstlisting} 
  
  \sol{3}
+ (a) To take a look into this lemma, we test for $p=5$. \begin{equation}
+ 	1^2\equiv 1,\ 2^2\equiv 4,\ 3^2\equiv 4,\ 4^2\equiv 1 \pmod{5}
+ \end{equation}
+ Apparently the values at the edge of the given set $\{1, \ldots, p-1\}$ have themself as their modular inverse. \begin{enumerate}
+ 	\item It is obvious that \begin{equation}
+ 		1^2 \equiv 1 \pmod{p}
+ 	\end{equation} holds for every $p$, not only primes.
+ 	\item We take a look at $p-1$. We see that \begin{equation}
+ 		(p-1)^2=p^2-2p+1
+ 	\end{equation} and realize that \begin{equation}
+ 		p^2-2p \equiv 0 \pmod{p}.
+ 	\end{equation} Hence, we know that \begin{equation}
+ 		(p-1)^2 \equiv 1 \pmod{p}.
+ 	\end{equation}
+ \end{enumerate}
+
+ (b) We can split up the factorial of $p-1$ to \begin{gather}
+ 	(p-1)!=1\cdot 2\cdot\ldots\cdot (p-2)\cdot (p-1).
+ \end{gather} Since every prime $p$ that fulfils $p>2$ is a odd number, we can build pairs from elements of the set \begin{equation}
+ 	P := \{x\in\mathbb{N}| x<p\}
+ \end{equation} because we know that \begin{equation}
+ 	\exists k\in\mathbb{N}: \# P=2k.
+ \end{equation} Since we know that \begin{equation}
+ 	\forall k_1\in P\setminus\{1,p-1\}:\ \exists! k_2\in P\setminus\{k_1\}:\ k_1\cdot k_2 \equiv 1 \pmod{p}
+ \end{equation} $(p-1)!$ shortens itself down. Only $1$ and $p-1$ (which are their own modular inverse) stay. We see that \begin{equation}
+ 	(p-1)!\equiv p-1 \equiv -1 \pmod{p},
+ \end{equation} which was assumed.
+ 
+ (c) If $N$ is not prime, we know that \begin{equation}
+ 	N = \prod_{i\in P} i
+ \end{equation} where $P$ is the list of prime factors of $N$. We also know that \begin{equation}
+ 	\forall p\in P:\ N \equiv 0 \pmod{p}
+ \end{equation} holds. Thus \begin{equation}
+ 	\exists M\subseteq P: \prod_{p\in M}p \equiv 0 \pmod{N}
+ \end{equation} holds, for every $N>4$. Looking at $(N-1)!$, we always have factors $p_1,p_2\in M$ whose product is $0 \pmod N$. Thats why \begin{equation}
+ 	(N-1)!\equiv 0 \not\equiv -1 \pmod{N}
+ \end{equation} holds if $N>4$. To expand to the given assumption, we have to look at non-prime numbers in $\{2,\ldots, 4\}$, which is $4$. By elementary school calculation we see that \begin{equation}
+ 	3!\equiv 6\equiv 2\not\equiv -1\pmod{4}.
+ \end{equation} Thats why the assumption holds.
+ 
+ (d) In task 2b we saw that calculating factorials is not easier than performing a simple prime test by dividing with presumed prime factors. Thus applying Wilsons theorem is an insufficiently slow test for primality. Using Fermat's little theorem is much faster.
  
  \sol{4}
+ (a) Done. Apparently there is a bijective relation between values from the first column and their assigned values in the same row from columns two and three. For each value in the first row, there is a unique pair of values from the letter columns.
+
+ (b) Let $i_1,i_2$ both be solutions to all given congruences. Since \begin{equation}
+ 	i_1\equiv i_2\pmod{p}\ \land\ i_1\equiv i_2\pmod{q},
+ \end{equation} we know that \begin{equation}
+ 	\exists w_1,w_2:\ (i_1-i_2)=w_1p=w_2q.
+ \end{equation} Since $p$ and $q$ are coprime, we know that \begin{equation}
+ 	pq \mid i_1-i_2.
+ \end{equation} Therefore \begin{equation}
+ 	i_1\equiv i_2\pmod{pq}
+ \end{equation} holds. If $i_1,i_2\in\mathbb{N}$ and $i_1<pq, i_2<pq$, we see that \begin{equation}
+ 	i_1-i_2\equiv 0 \pmod{pq}\ \leftrightarrow\ i_1=i_2,
+ \end{equation} which shows that $i_1$ and $i_2$ indeed are equal.
+ 
+ (c) In order to proof the stated congruence, we have to show all three of the following cases: \begin{enumerate}
+ 	\item when $p<q$ and
+ 	\item when $p>q$.
+ \end{enumerate} We try to do the first one and hope to be able to say that the second can be shown similar to the first. At first we assume $p<q$. Then we have \begin{equation}
+ 	i \equiv jq (q-1 \pmod p)+kp (p-1) \pmod{pq},
+ \end{equation} which is true if there \begin{equation}
+ 	\exists e\in\mathbb{Z}:\ i \equiv jq (ep+q-1)+kp(p-1) \pmod{pq}.
+ \end{equation} This we can simplify \begin{align}
+ 	i &\equiv jqep +jq^2-jq+kp^2-kp \pmod{pq} \\
+ 	&\equiv jq^2-jq+kp^2-kp \pmod{pq} \\
+	&\equiv jq(q-1)+kp(p-1) \pmod{pq}.
+ \end{align}
+ 
+ 
+ (d) Adding additional primes to $p$ and $q$ seems possible. If \begin{equation}
+ 	N\subset\{x\in\mathbb{N}\ |\ x\textrm{ prime}\}
+ \end{equation} we would have $\#N$ modular congruences since \begin{equation}
+ 	\forall n\in N: \exists e<n:\ i\equiv e \pmod{n}
+ \end{equation} where \begin{equation}
+ 	0\leq i\leq \prod_{n\in N}n.
+ \end{equation} All proofs should work in a similar way then.
  
  \sol{5}
+  (a) Since we know \begin{equation}
+ 	p \equiv 3 \pmod{4},
+ \end{equation} we know that \begin{equation} \label{task5:modp}
+ 	\exists k\in\mathbb{Z}:\ p=4k+3.
+ \end{equation} By simply inserting this into the given expression, we have \begin{equation}
+ 	\frac{p+1}{4} = \frac{4k+3+1}{4} = \frac{4k+4}{4}=k+1, \label{5a:kp1}
+ \end{equation} which is obviously an integer. \qed
+ 
+  (b) We have to proof that \begin{equation}
+ 	a^{\frac{p+1}{4}}\overset{!}{\equiv}x \pmod{p}
+ \end{equation} holds.
+ 
+% \textit{Proof.} We chop down using \autoref{5a:kp1}\begin{align}
+% 	a^{k+1}\overset{!}{\equiv}x \pmod{p}
+% \end{align}
+
+ \textit{Proof.} Since $a$ has a square root $x$, we know that $a$ is a quadratic residue mod $p$. Thus, we know that the Legendre symbol \begin{equation}
+ 	\bigg(\frac{a}{p}\bigg)\equiv 1\pmod{p}
+ \end{equation} and therefore can use Legendres formula \begin{equation}
+ 	a^{\frac{p-1}{2}}\equiv 1\pmod{p}. \label{5b:saver}
+ \end{equation} We have to show that the squared value of the presumed root is $a$. We can simplify in the following way \begin{gather}
+ 	(a^{\frac{p+1}{4}})^2=a^{2\frac{p+1}{4}}=a^{\frac{p+1}{2}}=a^{\frac{p-1+2}{2}}=a^{\frac{p-1}{2}+1}=a^{\frac{p-1}{2}}\cdot a.
+ \end{gather} At this point we can apply \autoref{5b:saver} and see that \begin{equation}
+ 	(a^{\frac{p+1}{4}})^2\equiv a^{\frac{p-1}{2}}\cdot a\equiv a\pmod{p},
+ \end{equation}
+ which means that $a^{\frac{p+1}{4}}$ really is a square root $x$. \qed
+ 
+ 
+% Since we have the power, but also the inexperience, of youth, we show the equivalent \begin{equation} \label{ass:5b}
+% 	\exists k_1, k_2\in\mathbb{Z}:\ k_1p+\bigg(a^{\frac{p+1}{4}}\bigg)^2\overset{!}{=}k_2p+a.
+% \end{equation} This we can easily simplify down \begin{align}
+%	(k_1-k_2)p+\big(a^{\frac{p+1}{4}}\big)^2 &\overset{!}{=}a \\
+%	(k_1-k_2)p+\big(a^{k+1}\big)^2 &\overset{!}{=}a \\
+%	(k_1-k_2)p+a^{2(k+1)} &\overset{!}{=}a \\
+%	(k_1-k_2)p+a^{2k+2} &\overset{!}{=}a \\
+%	(k_1-k_2)p &\overset{!}{=}a-a^{2k+2} \\
+%	k_1-k_2 &\overset{!}{=}\frac{a-a^{2k+2}}{p} \\
+%	k_1-k_2 &\overset{!}{=}\frac{a-a^{2k+2}}{4k+3} \\
+% \end{align} until we have to use \autoref{task5:modp} \begin{align}
+% 	(k_1-k_2)p+a^{\frac{p+1}{2}} &\overset{!}{=}a \\
+% \end{align} At this point we realize that if $k_1=k_2$ we have \begin{align}
+% 	(k_1-k_2)p &\overset{!}{=}a-a^{\frac{p+1}{2}} \\
+% 	k_1-k_2 &\overset{!}{=}\frac{a-a^{\frac{p+1}{2}}}{p} \\
+% \end{align} Now we have to find a $k\in\mathbb{Z}$ that satisfies \begin{equation}
+% 	2k+2=1,
+% \end{equation} which holds for $k=-\frac{1}{2}$ because \begin{equation}
+% 	-1+2=1.
+% \end{equation} In conclusion, we found \begin{equation}
+% 	k=-\frac{1}{2},\quad k_1\in\mathbb{Z},\quad k_2=k_1
+% \end{equation} which shows \ref{ass:5b} and therefore the assumption. \qed
  
 \end{document}
