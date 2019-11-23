@@ -1,0 +1,27 @@
+\documentclass[12pt]{article}
+
+% The preamble file contains all the macros and page setup. I recommend making a folder where you compile your exercises and always call on the preamble.
+\input{preamble}
+
+% Here you can define your own macros
+\newcommand{\calF}{\ensuremath{\mathcal{F}}}
+
+\begin{document}
+ 
+ %To create a header for the document use the following macro. \student{Homework number}{Name}
+
+ \student{2}{Stefan Reschke}
+
+ \sol{1} (a) We proof given cases of the definition. \begin{enumerate}
+ 	\item If $a$ and $b$ are even numbers, we have \begin{align}
+ 		\texttt{gcd}(a,b) &= \texttt{gcd}\bigg(2\cdot\frac{a}{2},2\cdot\frac{b}{2}\bigg) \\
+ 		&=2\cdot\texttt{gcd}\bigg(\frac{a}{2},\dfrac{b}{2}\bigg),
+ 	\end{align} which works, because $\frac{a}{2},\frac{b}{2}\in\mathbb{N}$.
+ 	\item If $a$ is odd and $b$ is even, we have \begin{align}
+ 		\texttt{gcd}(a,b)&=\texttt{gcd}\bigg(a,2\cdot\frac{b}{2}\bigg) \\
+ 		&=\texttt{gcd}\bigg(a,\frac{b}{2}\bigg)\cdot\texttt{gcd}(a,2).
+ 	\end{align} Since $a$ is odd, we know that $\texttt{gcd}(a,2)=1$. Thus \begin{align*}
+ 		\texttt{gcd}(a,b)&=\texttt{gcd}\bigg(a,\frac{b}{2}\bigg).
+ 	\end{align*}
+ \end{enumerate}
+\end{document}
