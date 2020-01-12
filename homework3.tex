@@ -1,0 +1,118 @@
+\documentclass[12pt]{article}
+
+% The preamble file contains all the macros and page setup. I recommend making a folder where you compile your exercises and always call on the preamble.
+\input{preamble}
+
+% Here you can define your own macros
+\newcommand{\calF}{\ensuremath{\mathcal{F}}}
+
+\begin{document}
+ 
+ %To create a header for the document use the following macro. \student{Homework number}{Name}
+
+ \student{3}{Stefan Reschke}
+ 
+
+ \sol{1} (a) If $n=3$ with coin values $[1,3,4]$ and try the algorithm on the value $6$, we will get $[4,1,1]$ which is of length $3$ but there is also the shorter $[3,3]$ with a length of $2$. Thus this capitalist algorithm will not give smallest coin combination for all possible coin values.
+ 
+ (b) Given a value $k$ we know that \begin{equation}
+ 	\exists l\in\mathbb{N}:\ b^l<k\ \land\ b^{l+1}>k.
+ \end{equation} Thus by picking $b^l$ we reduce from $k$ and call with $k-b^l$ recursively. In this step, we can either pick $b^l$ again or use a coin of even lower value. This way we efficiently reduce to the space between $1$ and $b$.
+ 
+ If $1\leq k\leq b-1$ we always need to pick the coin of value $1$ exactly $k$ times. There is no more efficient way to give those values. Thus the algorithm always works in this coin set.
+ 
+ (c) Again on a value $k$, we can call recursively on all values on $c_i<k$. The smallest number of coins to give the value $k$ must be \begin{equation}\label{1c:dynprog-rule}
+  	\texttt{nbCoins}(k):=\texttt{min}\big\{\texttt{nbCoins}(k-b)\ |\ b\in c\big\} + 1.
+ \end{equation} Thus we have a rule that reduces to subproblems. We apply dynamic programming and store the results of the subproblems in an array. We use the algorithm in \autoref{algo:1}.
+ 
+ \textbf{Is it correct?} Since $c[1]=1$, the second loop will always be run and all entries in $a$ will be written with the correct value according to \autoref{1c:dynprog-rule}. So: yes!
+ 
+ \textbf{How fast is it?} It will take at most $\#c\cdot T$ steps, thus $\mathcal{O}(\#c\cdot T)$.
+ 
+ \textbf{Can we do better?} No subproblem is calculated a second time. I think we can't do better.
+
+\begin{lstlisting}[caption={Minimum number of coins},label={algo:1}]
+Name: nbCoins
+Input: target value T, coins c
+Output: number of coins in c to give T
+
+a := Array of length T filled with infinities.
+for t in {1, ..., T}:
+	for k in c, if k < t:
+		new := a[t-k] + 1.
+		if new < a[t]:
+			a[t] := new.
+return a[T]
+\end{lstlisting}
+ 
+ \sol{3} This feels a lot like quicksort. If the cuts closest to the center are done first and then again first for each recursive call, we get the optimal result. If our algorithm \texttt{cut} takes a length $l$ of the array at hand and a list of of points $p$ where to cut, we have \begin{multline}
+ 	\texttt{cut}(l, P)=\texttt{min}_{p\in P}\bigg(\texttt{cut}\big(p, \{k\in P\ |\ k<p\}\big) \\
+ 	+\texttt{cut}\big(l-p, \{k-p\ |\ k\in P\ \land\ k>p\}\big)\bigg)+l.
+ \end{multline}
+ 
+ We can use the algorith in \autoref{algo:3}. It takes a length $l$ and a set $P$ as parameters and a dictionary $T$ to store results of the sub problems. At the start all keys of $T$ are empty. The overall result is stored in $T[l,P]$.
+
+ \vspace{.5cm}
+ \textbf{Is it correct?} All we did was applying the above rule. Since its correct, the algorithm also must give correct results.
+ 
+\begin{lstlisting}[caption={Cutting arrays recursively},label={algo:3}]
+Name: cut
+Input: length of array l, set of cuts P, dictionary T
+Output: cost of performing cuts in P on array of length l
+ 
+if P is empty:
+	T[l, P] := 0.
+	return.
+result := infinity.
+for p in P:
+	Left := {k in P | k < p}.
+	Right := {k - p | k in P & k > p}.
+	cut(p, Left, T)
+	cut(l-p, Right, T)
+	result := min(result, T[p, Left] + T[l-p, Right]).
+T[l, P] := result + l.
+\end{lstlisting}
+
+ \sol{4} Our goal is to maximise $P[x,y]$ for all $x\times y$ blocks. Let $M[x,y]$ the maximum price we can achieve for a (split) block of lengths $x,y$. Each time, we have three choices: \begin{enumerate}
+ 	\item Leave it as it is (if $M[x,y]=P[x,y]$)
+ 	\item Cut at $x$, at a line $i$ s.t. $M[i,y]+M[x-i,y]>P[x,y]$
+ 	\item Cut at $y$, at a line $i$ s.t. $M[x,i]+M[x,y-i]>P[x,y]$
+ \end{enumerate}
+ Thus we can split it up into smaller sub problems. For the latter cases, we only have to look at $i$s where $1\leq i\leq\floor{\frac{x}{2}}$ or $1\leq i\leq\floor{\frac{y}{2}}$ respectively, because addition is commutative. Thus we have \begin{multline}
+ 	M[x,y]=\texttt{max}\bigg\{P[x,y],\ \texttt{max}_{1\leq i\leq\floor{\frac{x}{2}}} (M[i,y]+M[x-i,y]),\ \texttt{max}_{1\leq i\leq\floor{\frac{y}{2}}} (M[x,i]+M[x,y-i])\bigg\}.
+ \end{multline} This we can again forge into an recursive dynamic programming algorithm. We use the algorithm in \autoref{algo:4} and say that its $x\times y$-table $M$ is initialized with empty values and the result of the overall algorithm is written to $M[x,y]$.
+
+ \vspace{.5cm}
+ \textbf{Is it correct?} Recursion stops if we cut to lengths of $0$, thus we still keep cutting plates of length $1$ into smaller plates. Everything we did was formalizing the rule above. Therefore this gives correct results.
+ 
+ \textbf{How much time does it take?} $\mathcal{O}(x\cdot y)$ as we do not call a sub problem twice (see first assertion in algorithm).
+
+ \textbf{Can we do better?} There probably is a nicer way of writing this algorithm. But I think we can't do any better because we cannot make assumptions on $P[x,y]$.
+
+\begin{lstlisting}[caption={Cutting marble recursively},label={algo:4}]
+Name: optimalCut
+Input: lengths x and y, table M
+Output: nothing, fills table M
+
+if M[n,m] already set:
+    return.
+if x=0  or  y=0 then:
+    M[i,j] := 0.
+else:
+    max := 0.
+    for i in {1, ..., floor(x/2)}:
+        optimalCut(i, y, M).
+        optimalCut(x-i, y, M).
+        if M[i,y] + M[x-i,y] > max:
+            max := M[i,y] + M[x-i,y].
+    for i in {1, ..., floor(y/2)}:
+        optimalCut(x, i, M).
+        optimalCut(x, y-i, M).
+        if M[x,i] + M[x,y-i] > max:
+            max := M[x,i] + M[x,y-i].
+    if P[x,y] > max:
+        max := P[x,y].
+    M[n][m] := max.
+\end{lstlisting}
+ 
+\end{document}
