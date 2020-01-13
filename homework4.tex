@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+
+% The preamble file contains all the macros and page setup. I recommend making a folder where you compile your exercises and always call on the preamble.
+\input{preamble}
+
+% Here you can define your own macros
+\newcommand{\calF}{\ensuremath{\mathcal{F}}}
+\newcommand{\polyreduce}{$\leq_{m}^{p}$}
+
+\begin{document}
+ 
+ %To create a header for the document use the following macro. \student{Homework number}{Name}
+
+ \student{3}{Stefan Reschke}
+ 
+
+ \sol{a} \textbf{Proof that \texttt{Max2Sat} is NP-Complete!}
+
+(a) \texttt{Max2Sat} obviously is in NP.
+
+(b) Theorem: \texttt{3Sat} \polyreduce{} \texttt{Max2Sat}, thus \texttt{Max2Sat} is NP-hard.
+
+\vspace{.3cm}
+\noindent \textit{Proof.} Given an instance of \texttt{3Sat} $\mathcal{S}_3$, we construct a corresponding instance $\mathcal{S}_{\texttt{max2}}$ of \texttt{Max2Sat}. $\mathcal{S}_3$ has $l$ given clauses $c_1,\ldots,c_l$ consisting of 3 literals. We reconstruct these clauses s.t. we are left with some clauses of length $\leq 2$ that are used in $\mathcal{S}_{\texttt{max2}}$.
+
+Assume we have a clause $c_i=x_i\lor y_i\lor z_i$ of $\mathcal{S}_3$. We add the following clauses to $\mathcal{S}_{\texttt{max2}}$ \begin{gather*}
+	\big\{w_i, x_i, y_i, z_i,\\ \lnot x_i\lor \lnot y_i, \lnot y_i\lor \lnot z_i, \lnot x_i\lor \lnot z_i, \\ \lnot w_i\lor x_i, \lnot w_i\lor y_i, \lnot w_i\lor z_i \big\},
+\end{gather*} where $w_i$ are newly introduced variables.
+
+If $\mathcal{S}_3$ is satisfiable, at least one of the variables $x_i$, $y_i$ or $z_i$ in a clause $c_i$ must be true. Thus we can simply look at all three cases: \begin{enumerate}
+\item If $\texttt{true}, \texttt{false}, \texttt{false}$, then 6 clauses, if $w_i$ is \texttt{true}, or 7 clauses, otherwise, are \texttt{true}.
+\item If $\texttt{true}, \texttt{true}, \texttt{false}$, then 7 clauses are \texttt{true}.
+\item If $\texttt{true}, \texttt{true}, \texttt{true}$, then 7 clauses, if $w_i$ is \texttt{true}, or 6 clauses, otherwise, are \texttt{true}.
+\end{enumerate} So in any case, we can choose $w_i$ such that 7 clauses of these groups are always true. Thus, if we pick $k=7\cdot l$, we should have $\mathcal{S}_{\texttt{max2}}$ set up.
+
+This whole conversion took polynomial time, thus we created $\mathcal{S}_{\texttt{max2}}$ from $\mathcal{S}_{3}$ in polynomial time. \qed
+ 
+
+ \sol{b} \textbf{Proof that \texttt{MaxCut} is NP-Complete!}
+
+(a) \texttt{MaxCut} obviously is in NP.
+
+(b) Theorem: \texttt{Nae3Sat} \polyreduce{} \texttt{MaxCut}, thus \texttt{MaxCut} is NP-hard.
+
+\vspace{.3cm}
+\noindent \textit{Proof.} Given a \texttt{Nae3Sat} instance $\mathcal{S}_{\texttt{nae3}}$, we construct a \texttt{MaxCut} instance $\mathcal{M}$. We assume that $\mathcal{S}_{\texttt{nae3}}$ is given $m$ clauses $c_1,\ldots, c_m$ and contains $n$ variables.
+\begin{enumerate}
+ \item We construct a graph $G$ such that each variable $x_i$ used in $c_1,\ldots, c_m$ produces vertices $x_i$ and $\lnot x_i$.
+ \item We set $10\cdot m$ edges between $x_i$ and $\lnot x_i$.
+ \item For every clause $c_i=x_i\lor y_i\lor z_i$, we set edges $(x_i, y_i)$, $(y_i, z_i)$ and $(z_i, x_i)$ in G.
+\end{enumerate}
+Now we set $k=10mn+2m$, push it all into $\mathcal{M}$ and claim that if $c_1,\ldots c_m$ are satisfiable, $\mathcal{M}$ returns \texttt{true}.
+
+This is easy to see, because either $x_i$ or $\lnot x_i$ hold, thus all edges created in step 2 are cut (which contributes $10mn$ to our goal of at least $k$). Since the variables appear in clauses and are near the cut done in the previous step, we observe that for each clause 2 additional edges go across the cut (which contributes the missing $2m$ edges to the cut). \qed
+
+
+ \sol{c} \textbf{Proof that \texttt{DomSet} is NP-Complete!}
+
+(a) \texttt{DomSet} obviously is in NP.
+
+(b) Theorem: \texttt{VC} \polyreduce{} \texttt{DomSet}, thus \texttt{DomSet} is NP-hard.
+
+\vspace{.3cm}
+\noindent \textit{Proof.} Given an instance of \texttt{VC}, we alter its input graph $G$ and value $k$ to get a corresponding instance of \texttt{DomSet}. \begin{enumerate}
+ \item Let $G'$ be a copy of $G$.
+ \item For each edge $(x,y)$ in $G'$, we introduce a new vertex $w$.
+ \item For each added $w$ we add edges $(x, w)$ and $(w, y)$ in $G'$.
+ \item Let $k'$ be $k+n$ where $n$ is the number of isolated vertices in $G$.
+\end{enumerate}
+We claim that $(G', k')$ is a correctly matched instance of \texttt{DomSet}.
+
+ 
+\end{document}
