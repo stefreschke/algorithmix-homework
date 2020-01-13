@@ -11,7 +11,7 @@
  
  %To create a header for the document use the following macro. \student{Homework number}{Name}
 
- \student{3}{Stefan Reschke}
+ \student{4}{Stefan Reschke}
  
 
  \sol{a} \textbf{Proof that \texttt{Max2Sat} is NP-Complete!}
@@ -67,7 +67,37 @@ This is easy to see, because either $x_i$ or $\lnot x_i$ hold, thus all edges cr
  \item For each added $w$ we add edges $(x, w)$ and $(w, y)$ in $G'$.
  \item Let $k'$ be $k+n$ where $n$ is the number of isolated vertices in $G$.
 \end{enumerate}
-We claim that $(G', k')$ is a correctly matched instance of \texttt{DomSet}.
+We claim that $(G', k')$ is a correctly matched instance of \texttt{DomSet}. Suppose $V'$ is a vertex cover for $G$. We can show that $V_{\texttt{dom}}:=V'\cup V_I$ (where $V_I$ are all isolated vertices in $G$ and $G'$) is a dominating set of $G'$.
+
+We see that while looking at all three possible types of vertices in $G'$: \begin{enumerate}
+ \item All isolated vertices are in $V_{\texttt{dom}}$ by defintion. Thus they are dominated.
+ \item For each in step 2 added vertex $w$ in $G'$, we have vertices $u,v\in G$ and edges $(u,w), \ (w,v)\in V(G')$. We know that eithr $u\in V'$ or $v\in V'$. Thus $w$ is dominated by the vertex that also is in $V'$.
+ \item Every other vertex $v\in G$ is either in $V'$ or all of its neighbours are. So it is also dominated.
+\end{enumerate}
+
+Therefore our reduction is correct. It again took polynomial time, thus the assumption holds. \qed
+
+
+
+
+ \sol{d} \textbf{Proof that \texttt{PartForest} is NP-Complete!}
+
+(a) \texttt{PartForest} obviously is in NP.
+
+(b) Theorem: \texttt{kCol} \polyreduce{} \texttt{PartForest}, thus \texttt{PartForest} is NP-hard.
+
+\vspace{.3cm}
+\noindent \textit{Proof.} Given an instance of \texttt{kCol}, we alter its input graph $G$ to get a corresponding instance of \texttt{PartForest} (with the same $k$ as input).
+\begin{enumerate}
+ \item Let $G'$ again be a copy of $G$.
+ \item Add $k$ additional vertices $v_1,\ldots v_k$.
+ \item Add edges $\big\{(v,v_i)\ |\ v\in V(G)\big\}$ for all added vertices $v_i$.
+\end{enumerate}
+We claim that $(G', k)$ is a correctly matched instance of \texttt{PartForest}.
+
+Suppose $G$ is $k$-colorable. We partition $V(E)$ into separate sets $C_1,\ldots, C_k$ s.t. each $C_i$ contains all vertices with the same color. For each $C_i$, we define $C_i':=C_i\cup\{v_i\}$. The only edges induced by each $C_i'$ are the edges $(v,v_i)$ where $v\in V(C_i)$. Thus, $C_i'$ does not have a cycle. Therefore the sets $C_1,\ldots,C_k$ partition $G$ into $k$ forests.
+
+The conversion from $G$ to $G'$ took polynomial time, thus \texttt{kCol} \polyreduce{} \texttt{PartForest}. \qed
 
  
 \end{document}
