@@ -1,0 +1,40 @@
+\documentclass[12pt]{article}
+
+% The preamble file contains all the macros and page setup. I recommend making a folder where you compile your exercises and always call on the preamble.
+\input{preamble}
+
+% Here you can define your own macros
+\newcommand{\calF}{\ensuremath{\mathcal{F}}}
+\newcommand{\polyreduce}{$\leq_{m}^{p}$}
+
+\begin{document}
+ 
+ %To create a header for the document use the following macro. \student{Homework number}{Name}
+
+ \student{5}{Stefan Reschke}
+ 
+
+ \sol{1} The Steiner tree problem (STP) can indeed be approximated to this extend. We write MStT for the minimum Steiner tree to not confuse it with the minimum spanning tree (MST).
+ 
+ Since the MST spans all vertices $V$, it also spans all vertices $V_0$, since $V_0\subseteq V$.
+ 
+ We consider a DFS traversal of $G$, including every return to a vertex at the end of a subtree in our recursive calls. This traversal is a cycle over all $v\in V$. Let that traversal be of length $m$, we have \begin{equation}
+ 	\sum_{i=0}^{m} d(v_i, v_i+1) = 2\cdot \texttt{cost}(\texttt{MStT}),
+ \end{equation} since all edges are used twice. We remove all vertices in $V\setminus V_0$ and only keep the first occurences of all in $V_0$. We say this new traversal is of length $k$. Then we have \begin{equation}
+ 	\sum_{i=0}^{k} d(v_i, v_i+1) \leq \sum_{i=0}^{m} d(v_i, v_i+1)
+ \end{equation}, since $k<m$a and thus \begin{equation}
+ 	\sum_{i=0}^{k} d(v_i, v_i+1) \leq 2\cdot \texttt{cost}(\texttt{MStT}).
+ \end{equation} This $k$-sized traversal being a path, is also a tree. Using the graph induced, we arrive at the assumption.
+
+ \sol{2} (a) Both operations on RB-Trees can involve a rotation. However, they don't have to. Possible outcomes are: \begin{enumerate}
+ \item \texttt{insert} requires rotation, \texttt{deletion} requires rotation
+ \item \texttt{insert} requires no rotation, \texttt{deletion} requires rotation
+ \item \texttt{insert} requires rotation, \texttt{deletion} requires no rotation
+ \item \texttt{insert} requires no rotation, \texttt{deletion} requires no rotation
+ \end{enumerate}
+
+\vspace{.5cm}
+\noindent (b)
+ 
+  
+\end{document}
